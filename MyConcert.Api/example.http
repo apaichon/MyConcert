@@ -1,0 +1,14 @@
+GET https://localhost:5003/api/values/10
+
+###
+GET https://localhost:5003/api/concert
+
+###
+GET http://localhost:5002/api/concert
+
+###
+POST https://localhost:5003/api/concert/searchConcert
+content-type: application/json
+
+{"_id": "impact2019001"}
+

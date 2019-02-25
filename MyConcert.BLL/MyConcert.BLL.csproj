@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Puppy\Puppy.DAL\Puppy.DAL.csproj" />
+    <ProjectReference Include="..\Puppy\Puppy.BLL\Puppy.BLL.csproj" />
+    <ProjectReference Include="..\Puppy\Puppy.Model\Puppy.Model.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+</Project>
