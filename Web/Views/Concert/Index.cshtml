@@ -1,0 +1,48 @@
+@using Newtonsoft.Json;
+@model IEnumerable<MyConcert.Models.ConcertModel>
+<style>
+  
+.card-img-top {
+    height: 15rem;
+    object-fit: cover;
+}
+
+</style>
+<div class="container">
+  <form class="input-group mb-3" asp-controller="Concert" asp-action="Index" method="post">
+  <input type="text" name="SearchString" class="form-control" placeholder="Search the concert." aria-label="Search the concert." aria-describedby="basic-addon2">
+  <div class="input-group-append">
+    <button type="submit" class="btn btn-block btn-primary">Search</button>
+  </div>
+  </form>
+
+  <div class="card-deck mb-3 text-center">
+    @foreach (var item in Model) {
+    <div class="card mb-4 shadow-sm">
+      <div class="card-header">
+        <h4 class="my-0 font-weight-normal"> 
+          @{
+            var s = item.Title.Substring(0,(item.Title.Length <=30?item.Title.Length:30 ));
+          }
+          @s
+           </h4>
+      </div>
+      <img src="@Html.DisplayFor(modelItem => item.ImageUrl)" class="card-img-top" alt="...">
+      <div class="card-body">
+        <ul class="list-unstyled mt-3 mb-4">
+          <li> @Html.DisplayFor(modelItem => item.StartDate)</li>
+          <li>
+            @{
+            var location = item.Location.Name.Substring(0,(item.Location.Name.Length <=30?item.Location.Name.Length:30 ));
+          }
+          @location 
+          
+            </li>
+        </ul>
+        <button  onclick="window.location='@Url.Action("Details", "Concert", new { concertId = item.Id })'" type="button" class="btn btn-lg btn-block btn-outline-primary">Buy Ticket</button>
+
+      </div>
+    </div>
+    }
+    
+</div>

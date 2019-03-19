@@ -9,6 +9,7 @@ namespace MyConcert.BLL
         public ConcertBLL()
         {
             this.DbConfig.TableName ="concert";
+
         }
         
     }

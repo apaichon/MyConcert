@@ -25,15 +25,21 @@ namespace MyConcert.BLL
         
         public MyConcertBase()
         {
+
             _biz = new BusinessStrategy
                 (
                     new IBusinessOperator[] 
                     {
                         new AddOperator(),
-                        new GetOperator()
+                        new GetOperator(),
+                        new AggregateOperator(),
+                        new RunCommandOperator()
+                        
                     }
                 );
+    
             _dbConfig = new DataConfiguration();
+            
 
             _dbConfig.DataProvider = DataConfiguration.GetDataProvider(ConfigBase.DATABASE_PROVIDER);
             _dbConfig.ConnectionString = ConfigBase.GetConnectionString();
@@ -60,6 +66,28 @@ namespace MyConcert.BLL
                 msg
             );
         }
+
+        public Result Aggregate(object pipeline, IMessage msg)
+        {
+             return _biz.Execute(
+                _dbConfig,
+                BusinessOperator.Aggregate,
+                pipeline,
+                msg
+            );
+        }
+
+        public Result RunCommand(string filter, IMessage msg)
+        {
+             return _biz.Execute(
+                _dbConfig,
+                BusinessOperator.RunCommand,
+                filter.ToString(),
+                msg
+            );
+        }
+
+        
 
          public void Dispose()
         {

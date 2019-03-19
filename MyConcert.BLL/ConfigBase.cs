@@ -22,7 +22,7 @@ namespace MyConcert.BLL
     public static string GetConnectionString()
     {
       return DataConfiguration.GetConnectionString(
-        Environment.GetEnvironmentVariable(ENV_MODE),
+        Environment.GetEnvironmentVariable(ENV_MODE, EnvironmentVariableTarget.Machine),
         ConnectionStringList
       );
     }

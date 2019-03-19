@@ -1,0 +1,60 @@
+
+    <button class="btn btn-primary" onclick="getInfo()">Facebook Login</button>
+  <button onclick="getEmail()">Get Email</button>
+  <button onclick="LogOut()">Logout</button>
+
+@using (@Html.BeginForm("LogOn", "Authentication", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.Hidden("FBId","");
+}
+<script>
+    function WriteCookie(json) {
+    
+    var myDate = new Date();
+    myDate.setMonth(myDate.getMonth() + 12);
+    document.cookie = json.name +"=" + json.value + ";expires=" + myDate 
+                  + ";path=/";
+  }
+
+  function OpenFbLogin() {
+    const url ='https://www.facebook.com/v3.14/dialog/oauth?&response_type=token&display=popup&client_id=394701244428824&display=popup&redirect_uri=https://localhost:5001/Authentication/AuthenReply&scope=email';
+    window.open(url);
+  }
+
+
+  function getInfo() {
+    FB.login(function(response) {
+        if (response.authResponse) {
+        console.log('Welcome!  Fetching your information.... ');
+        FB.api('/me', function(response) {
+            console.log('Good to see you, ' + response.name + '.' );
+            $('#FBId').val(response.id);
+            console.log(response);
+            document.forms[0].submit();
+        });
+        } else {
+        console.log('User cancelled login or did not fully authorize.');
+        }
+    });
+  }
+
+ function LogOut() {
+     FB.logout(function(response) {
+        // user is now logged out
+        console.log(resonse);
+    });
+ }
+
+
+   function getEmail () {
+       FB.api(
+    "/100000312296218/",
+    function (response) {
+        console.log(response);
+      if (response && !response.error) {
+        /* handle the result */
+      }
+    }
+);
+   }
+</script>

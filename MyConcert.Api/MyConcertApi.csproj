@@ -12,8 +12,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MyConcert.BLL\MyConcert.BLL.csproj" />
-    <ProjectReference Include="..\Puppy\Puppy.BLL\Puppy.BLL.csproj" />
-    <ProjectReference Include="..\Puppy\Puppy.Model\Puppy.Model.csproj" />
+    <ProjectReference Include="..\..\PuppyFramework\Puppy.BLL\Puppy.BLL.csproj" />
+    <ProjectReference Include="..\..\PuppyFramework\Puppy.Model\Puppy.Model.csproj" />
   </ItemGroup>
 
 </Project>

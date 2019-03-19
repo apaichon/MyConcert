@@ -1,14 +1,50 @@
 GET https://localhost:5003/api/values/10
 
 ###
-GET https://localhost:5003/api/concert
+GET https://localhost:5003/api/concert?concertId=impact2019002
 
 ###
 GET http://localhost:5002/api/concert
 
 ###
-POST https://localhost:5003/api/concert/searchConcert
+POST https://localhost:5003/api/concert/SearchConcert
 content-type: application/json
 
-{"_id": "impact2019001"}
+{"title":{"$regex" : ".*.*", "$options" : "i"}}
+
+###
+POST http://localhost:5002/api/concert/SearchConcert
+content-type: application/json
+
+{"title":{"$regex" : ".*.*", "$options" : "i"}}
+
+###
+GET http://localhost:5002/api/concertSeats?concertId=impact2019002
+
+###
+GET http://localhost:5002/api/concertSeats/AvailableSeats?zoneId=1
+
+###
+POST https://localhost:5003/api/concertSeats/BookingSeats
+content-type: application/json
+    
+{
+    "seatIds":["impact2019002-TM5-24", "impact2019002-TM5-25", "impact2019002-TM5-26"],
+    "total": 3,
+    "booking":
+        {
+            "$set":
+                {
+                    "bookingStatus": 
+                        {   "_id":  "bs02",
+                            "name": "Sold Out", 
+                            "isActive": true,
+                            "bookedDate": "2019-03-31",
+                            "bookedBy": "2326020374085016"
+                        }
+                }
+        }
+        
+}
+
 

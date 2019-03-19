@@ -1,0 +1,99 @@
+@model MyConcert.Models.ConcertDetailModel;
+
+@{
+  var imageUrl =  (String.IsNullOrEmpty(Model.Concert.ImageUrl)?"":"../"+ Model.Concert.ImageUrl);
+  var layoutImageUrl = (String.IsNullOrEmpty(Model.Concert.ImageUrl)?"": "../"+ Model.Concert.LayoutImageUrl);
+ 
+}
+<div class="container">
+
+  <h1> 
+    <div class="d-flex flex-row bd-highlight">
+      <div class="p-2 bd-highlight">@Model.Concert.Title</div>
+      <div class="p-2 bd-highlight"><span class="badge badge-success">@Model.Concert.Status.Name</span></div>
+       <div class="p-2 bd-highlight"><button class="btn btn-primary">Buy Now</button></div>
+    </div>
+  </h1>
+  <dl>
+    <dt>
+      Date Time
+      <dd>@Model.Concert.StartDate - @Model.Concert.EndDate</dd>
+    </dt>
+    <dt>
+      Location
+      <dd>@Model.Concert.Location.Name</dd>
+    </dt>
+     <dt>
+      Capacity
+      <dd>@Model.Concert.Capacity</dd>
+    </dt>
+    <dt>
+      <dd><img src="@imageUrl"  class="img-fluid rounded mx-auto d-block" alt="Responsive image" /></dd>
+    </dt>
+  </dl>
+
+  <h2>Layout</h2>
+  <hr/>
+  <dl>
+   <dt>
+      <dd><img src="@layoutImageUrl"  class="img-fluid rounded mx-auto d-block" alt="Responsive image" /></dd>
+    </dt>
+    </dl>
+
+  <h2>Ticket List</h2>
+  <hr/>
+
+  <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Zone</th>
+      <th scope="col">Price</th>
+      <th scope="col">Total Available</th>
+      <th scope="col">Total Tickets</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+
+    @foreach (var x in Model.AvailableSeats)
+    {
+     
+      <tr>
+        <td scope="row">@x.Zone</td>
+        
+        <td>@x.Price</td>
+        <td>@x.TotalAvailable</td>
+        <td>@x.TotalTickets[0].TotalTickets</td>
+        
+          @if (x.TotalAvailable > 0)
+          {
+            <td> 
+              <button class="btn"onclick="window.open('@Url.Action("LayoutBooking", "Concert", new { zoneId = x.ZoneId })')"  > Book Now</button>
+              <button class="btn" value="@x.ZoneId" onclick="OpenLayout(this)" > Book Now</button>
+              
+              </td>
+          }
+      </tr>
+    }
+    
+  </tbody>
+</table>
+
+  <h2>Summary</h2>
+  <hr/>
+  <button class="btn btn-primary">Buy Now</button>
+
+</div>
+
+
+<script>
+
+  function OpenLayout (btn) {
+    var zoneId = btn.value;
+    WriteCookie({"name":"ZoneId", "value": zoneId});
+    window.open('./LayoutBooking?zoneId='+zoneId,'','height= 500, width=500,status=no,toolbar=no,location=no');
+   
+    //window.open("@(Url.Action("LayoutBooking", "Concert", new { zoneId= "+zoneId+"}))",'','height= 500, width=500,status=no,toolbar=no,location=no');
+  }
+
+</script>

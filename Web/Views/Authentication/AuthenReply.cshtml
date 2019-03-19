@@ -1,0 +1,48 @@
+<p>
+    Reply
+</p>
+
+<button onclick="getInfo()">Get Info</button>
+
+<button onclick="LogOut()">Logout</button>
+
+<script>
+(function() {
+   // your page initialization code here
+   // the DOM will be available here
+    getInfo();
+})();
+       function getEmail () {
+       FB.api(
+    "/100000312296218/",
+    function (response) {
+        console.log(response);
+      if (response && !response.error) {
+        /* handle the result */
+      }
+    }
+);
+   }
+
+  function getInfo() {
+    FB.login(function(response) {
+        if (response.authResponse) {
+        console.log('Welcome!  Fetching your information.... ', response);
+        FB.api('/me', function(response) {
+            console.log('Good to see you, ' + response.name + '.' );
+            console.log(response);
+           
+        });
+        } else {
+        console.log('User cancelled login or did not fully authorize.');
+        }
+    });
+  }
+
+  function LogOut() {
+     FB.logout(function(response) {
+        // user is now logged out
+        console.log(resonse);
+    });
+ }
+</script>

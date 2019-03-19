@@ -16,26 +16,36 @@ namespace MyConcertApi.Controllers
     [Produces("application/json")]
     public class ConcertController : ControllerBase
     {
-         // GET api/concert
-        [HttpGet("{jsonSearch}")]
-        public ActionResult<Result> Get(string jsonSearch)
+        public IMessage Message
         {
-            ConcertBLL concert = new ConcertBLL();
-            IMessage message = BusinessMessage.CreateMessage(BusinessLocale.th_TH);
-            Result result = concert.Get(jsonSearch, message);
-            return result;
+            get;set;
+        }
+        public ConcertController()
+        {
+           this.Message = BusinessMessage.CreateMessage(BusinessLocale.th_TH);
+        }
+ 
+        [HttpGet()]
+        public ActionResult<Result> GetConcert(string concertId)
+        {
+            using (ConcertBLL concert = new ConcertBLL())
+            {
+              // string jsonSerarh = String.Format("{Id:'{0}'}",concertId);
+              Result result = concert.Get("{_id:'"+concertId+"'}", this.Message);
+              return result;  
+            }
         }
 
-        // POST api/searchConcert
+        // POST api/concert/searchConcert
         [HttpPost("SearchConcert")]
-        public ActionResult<Result> PostSearchConcert([FromBody] string jsonSearch)
+        public ActionResult<Result> PostSearchConcert([FromBody] dynamic jsonSearch)
         {
-            // SetEnvironment();
-            ConcertBLL concert = new ConcertBLL();
-
-            IMessage message = BusinessMessage.CreateMessage(BusinessLocale.th_TH);
-            Result result = concert.Get(jsonSearch, message);
-            return result;
+            using(ConcertBLL concert = new ConcertBLL())
+            {
+                IMessage message = BusinessMessage.CreateMessage(BusinessLocale.th_TH);
+                Result result = concert.Get(jsonSearch.ToString(), message);
+                return result;
+            }
         }
 
         private void SetEnvironment()

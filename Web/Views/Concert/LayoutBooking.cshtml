@@ -1,0 +1,132 @@
+@model List<MyConcert.Models.ConcertSeatModel>;
+@using Newtonsoft.Json;
+
+<h1> Layout Booking </h1>
+ <table class="table">
+  <tbody>
+    @{
+      int x = Model[0].Zone.Columns; 
+      int y = Model[0].Zone.Rows;
+      int no = 0; 
+      <p>Total @Model.Count</p>
+      <p>x @x</p>
+      <p>y @y</p> 
+
+  
+    }
+
+  @for(int i=0;i<y; i++)
+  {
+    
+    <tr>
+    @for(int j=0;j<x;j++)
+    {
+        @if( no < Model.Count()) 
+        {
+          <td> @{ var num = no + 1; }
+            @num
+   
+          @if (Model[no].BookingStatus.Id != "bs01")
+          {
+            <img  id="@Model[no].Id" price="@Model[no].Zone.Price" no="@no"  style="background:red;cursor:hand;" src="../images/layout/seat_icon.png" width="15" height="15"/>
+          }
+          else
+          {
+             <img id="@Model[no].Id" price="@Model[no].Zone.Price" no="@no" onclick="reserveSeat(this)" style="cursor:hand;" src="../images/layout/seat_icon.png" width="15" height="15" />
+          }
+           </td>
+        }
+      no++;
+    }
+    </tr>
+  
+}
+  </tbody>
+ </table>
+
+ <h2>Summary</h2>
+  <hr/>
+  @using (@Html.BeginForm("Booking", "Concert", FormMethod.Post, new { enctype = "multipart/form-data" }))
+  {
+  <ul id ="ulSummary" class="list-group">
+  </ul>
+   @Html.Hidden("seatIds", "Test" );
+   @Html.Hidden("totalSeats", "0" );
+   <div class=form-group>
+        <input type="submit" value="Book Now" class="btn btn-primary" />
+    </div>
+  }
+
+ <!--  <button id="btnBookNow" onclick="bookNow()" disabled="true" class="btn btn-primary">Buy Now</button> -->
+ <input type="hidden" value="" id="seatList">
+  <script>
+    var mySeats = [];
+
+    function reserveSeat (img) {
+      var id = img.getAttribute("id");
+      var no = img.getAttribute("no");
+      var price = img.getAttribute("price")
+      let isExist = mySeats.findIndex(x => x.no === no);
+
+      if (isExist != -1) {
+        img.style.background = '';
+        mySeats.splice(isExist, 1);
+      } else {
+        img.style.background = 'yellow';
+        mySeats.push({
+          id: id,
+          no: no,
+          price: price
+        });
+      }
+      if(mySeats.length === 0) {
+        $('#btnBookNow').attr("disabled", true);
+      } else {
+        $('#btnBookNow').attr("disabled", false);
+        //$("#seatList").val(mySeats)   ; 
+      }
+      let idList = [];
+       mySeats.forEach((a) => {
+        idList.push(a.id);
+      })
+      $("#seatIds").val(JSON.stringify(idList));
+      $("#totalSeats").val(idList.length);
+
+      console.log($("#seatIds").val(),  $("#totalSeats").val());
+       summary();
+    }
+
+    function summary () {
+      $("#ulSummary").empty();
+      mySeats.forEach(s => {
+        $("#ulSummary").append ($('<li class="list-group-item">' +(parseInt(s.no) +1)+'<span class="badge badge-light">' +s.price+'</span></li>'));
+      });
+    }
+
+    function bookNow () {
+   
+    /* $.post( "/Concert/Booking", mySeats )
+      .done(function( data ) {
+        alert( "Data Loaded: " + data );
+      });
+*/
+      /*$.ajax({
+          type: 'POST',
+          url: '/Concert/Booking',
+          dataType: 'json',
+          contentType: 'application/json; charset=utf-8',
+          data: mySeats,
+          success: function(result) {
+              console.log('Data received: ');
+              console.log(result);
+          }
+      });*/
+
+
+      //window.location ="@(Url.Action("Booking", "Concert", new { seatIds= "+mySeats+"}))";
+        window.location = './Booking?seatIds='+ JSON.stringify(mySeats);
+    }
+
+
+
+  </script>
