@@ -86,8 +86,7 @@ namespace MyConcert.BLL
                     ".Replace("<ids>", seatIds);
                     Session = da.Open()
                     .CreateTransaction();
-                    //Session = da.Session;
-                   Session.StartTransaction();
+                    Session.StartTransaction();
                     da.Get(seatUnavailable, out tickets);
 
                     if(tickets != "[]" ) {
@@ -101,11 +100,6 @@ namespace MyConcert.BLL
                     }
                     ".Replace("<ids>", seatIds);
 
-                    /* string book = @"
-                    {
-                        booked: <jsonBooked>
-                    }".Replace("<jsonBooked>", jsonBooked);
-                    */
                     long total = 0 ;
                     da.EditMany(bookSeats, jsonBooked, out total );
                    if (totalSeats != total)
@@ -114,7 +108,7 @@ namespace MyConcert.BLL
                         throw new System.InvalidOperationException("Unavailable book all ticktes!");
                     }
 
-                   Session.CommitTransaction();
+                    Session.CommitTransaction();
                     result = Result.GetResult(BusinessStatus.Completed,210,msg, "Booking is successfully.");
 
                 }
@@ -130,6 +124,17 @@ namespace MyConcert.BLL
             }
 
             return result;
+        }
+
+        public Result GetTicketByOwner(string userId, IMessage msg)
+        {
+            string condition = "{'bookingStatus.bookedBy':'{0}'}".Replace("{0}",userId);
+            return this.BizObject.Execute(
+                this.DbConfig,
+                BusinessOperator.Get,
+                condition,
+                msg
+            );
         }
 
 

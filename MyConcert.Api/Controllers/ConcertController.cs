@@ -3,11 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using MyConcert.BLL;
 using Puppy.BLL;
 using Puppy.Model.Business;
 using Puppy.Model.Output;
 using Puppy.Model.Message;
+using Puppy.Model.Facade;
+using Puppy.Model.Data;
+using Puppy.Facade;
+using Puppy.Utils;
 
 namespace MyConcertApi.Controllers
 {
@@ -28,12 +33,48 @@ namespace MyConcertApi.Controllers
         [HttpGet()]
         public ActionResult<Result> GetConcert(string concertId)
         {
-            using (ConcertBLL concert = new ConcertBLL())
+            string jsonSerarh = "{}";
+            if (!String.IsNullOrEmpty(concertId))
+            {
+                jsonSerarh = "{'_id':'"+concertId+"'}";
+            }
+            
+            Result result = new Result();
+            try
+            {
+            LogUtil logger = new LogUtil ();
+            RestApiFacade restFacade = new RestApiFacade(logger);
+            DataConfiguration config = new DataConfiguration {
+                DataProvider = eDataProvider.MongoDb,
+                DatabaseName = "myconcert",
+                TableName ="concert"
+
+            };
+            ExecuteModel model = new ExecuteModel {
+                FileName ="D:\\Courses\\AspnetCore\\MyConcert\\MyConcert.BLL\\bin\\Debug\\netstandard2.0\\MyConcert.BLL.dll",
+                ClassName ="MyConcert.BLL.ConcertBLL",
+                MethodName ="Get",
+                InitParameter = config,
+                ExecuteParameter = jsonSerarh,
+                Message = this.Message,
+                UaString = HttpContext.Request.Headers["User-Agent"].ToString()
+            };
+            result = restFacade.ExecutionFlow(model);
+            }
+            catch(Exception err)
+            {
+                result.Message = err.Message;
+                result.StatusCode = 500;
+                result.Status = BusinessStatus.Error;
+            }
+            return result;
+           /*  using (ConcertBLL concert = new ConcertBLL())
             {
               // string jsonSerarh = String.Format("{Id:'{0}'}",concertId);
               Result result = concert.Get("{_id:'"+concertId+"'}", this.Message);
               return result;  
             }
+            */
         }
 
         // POST api/concert/searchConcert

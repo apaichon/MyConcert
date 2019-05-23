@@ -6,6 +6,7 @@
 @using (@Html.BeginForm("LogOn", "Authentication", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.Hidden("FBId","");
+    @Html.Hidden("FBName","");
 }
 <script>
     function WriteCookie(json) {
@@ -29,6 +30,7 @@
         FB.api('/me', function(response) {
             console.log('Good to see you, ' + response.name + '.' );
             $('#FBId').val(response.id);
+            $('#FBName').val(response.name);
             console.log(response);
             document.forms[0].submit();
         });
@@ -39,10 +41,17 @@
   }
 
  function LogOut() {
-     FB.logout(function(response) {
-        // user is now logged out
-        console.log(resonse);
-    });
+    FB.getLoginStatus(function(response) {
+            if (response.status === 'connected') {
+                FB.logout(function(response) {
+                    // this part just clears the $_SESSION var
+                    // replace with your own code
+                    $.post("/Authentication/LogOut").done(function() {
+                       window.location = '/';
+                    });
+                });
+            }
+        });
  }
 
 

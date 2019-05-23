@@ -1,5 +1,6 @@
 MyConcert.Api/bin
 MyConcert.Api/obj
+MyConcert.Api/logs
 MyConcert.BLL/bin
 MyConcert.BLL/obj
 MyConcert.Web

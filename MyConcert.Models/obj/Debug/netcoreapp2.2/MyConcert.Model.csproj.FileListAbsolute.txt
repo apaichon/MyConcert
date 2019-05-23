@@ -1,0 +1,12 @@
+D:\Courses\AspnetCore\MyConcert\MyConcert.Model\bin\Debug\netcoreapp2.2\MyConcert.Model.deps.json
+D:\Courses\AspnetCore\MyConcert\MyConcert.Model\bin\Debug\netcoreapp2.2\MyConcert.Model.dll
+D:\Courses\AspnetCore\MyConcert\MyConcert.Model\bin\Debug\netcoreapp2.2\MyConcert.Model.pdb
+D:\Courses\AspnetCore\MyConcert\MyConcert.Model\bin\Debug\netcoreapp2.2\Puppy.Model.dll
+D:\Courses\AspnetCore\MyConcert\MyConcert.Model\bin\Debug\netcoreapp2.2\Puppy.Model.pdb
+D:\Courses\AspnetCore\MyConcert\MyConcert.Model\obj\Debug\netcoreapp2.2\MyConcert.Model.csprojAssemblyReference.cache
+D:\Courses\AspnetCore\MyConcert\MyConcert.Model\obj\Debug\netcoreapp2.2\MyConcert.Model.csproj.CoreCompileInputs.cache
+D:\Courses\AspnetCore\MyConcert\MyConcert.Model\obj\Debug\netcoreapp2.2\MyConcert.Model.AssemblyInfoInputs.cache
+D:\Courses\AspnetCore\MyConcert\MyConcert.Model\obj\Debug\netcoreapp2.2\MyConcert.Model.AssemblyInfo.cs
+D:\Courses\AspnetCore\MyConcert\MyConcert.Model\obj\Debug\netcoreapp2.2\MyConcert.Model.csproj.CopyComplete
+D:\Courses\AspnetCore\MyConcert\MyConcert.Model\obj\Debug\netcoreapp2.2\MyConcert.Model.dll
+D:\Courses\AspnetCore\MyConcert\MyConcert.Model\obj\Debug\netcoreapp2.2\MyConcert.Model.pdb

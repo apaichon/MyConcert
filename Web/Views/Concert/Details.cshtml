@@ -68,9 +68,7 @@
           @if (x.TotalAvailable > 0)
           {
             <td> 
-              <button class="btn"onclick="window.open('@Url.Action("LayoutBooking", "Concert", new { zoneId = x.ZoneId })')"  > Book Now</button>
-              <button class="btn" value="@x.ZoneId" onclick="OpenLayout(this)" > Book Now</button>
-              
+              <button class="btn"onclick="window.open('@Url.Action("LayoutBooking", "Concert", new { zoneId = x.ZoneId })')"  > Book Now</button>      
               </td>
           }
       </tr>
@@ -78,10 +76,6 @@
     
   </tbody>
 </table>
-
-  <h2>Summary</h2>
-  <hr/>
-  <button class="btn btn-primary">Buy Now</button>
 
 </div>
 

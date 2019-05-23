@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\PuppyFramework\Puppy.Utils\Puppy.Utils.csproj" />
     <ProjectReference Include="..\..\PuppyFramework\Puppy.Model\Puppy.Model.csproj" />
+    <ProjectReference Include="..\MyConcert.Models\MyConcert.Models.csproj" />
   </ItemGroup>
 
 </Project>

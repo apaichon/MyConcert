@@ -78,3 +78,6 @@ D:\Courses\AspnetCore\MyConcert\Web\obj\Debug\netcoreapp2.2\MyConcert.Views.pdb
 D:\Courses\AspnetCore\MyConcert\Web\obj\Debug\netcoreapp2.2\MyConcert.csproj.CopyComplete
 D:\Courses\AspnetCore\MyConcert\Web\obj\Debug\netcoreapp2.2\Razor\Views\Concert\LayoutBooking.g.cshtml.cs
 D:\Courses\AspnetCore\MyConcert\Web\obj\Debug\netcoreapp2.2\Razor\Views\Authentication\LogIn.g.cshtml.cs
+D:\Courses\AspnetCore\MyConcert\Web\obj\Debug\netcoreapp2.2\Razor\Views\Shared\Unauthorize.g.cshtml.cs
+D:\Courses\AspnetCore\MyConcert\Web\bin\Debug\netcoreapp2.2\MyConcert.Models.dll
+D:\Courses\AspnetCore\MyConcert\Web\bin\Debug\netcoreapp2.2\MyConcert.Models.pdb

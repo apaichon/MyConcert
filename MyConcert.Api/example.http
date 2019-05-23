@@ -5,6 +5,24 @@ GET https://localhost:5003/api/concert?concertId=impact2019002
 
 ###
 GET http://localhost:5002/api/concert
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjEiLCJuYmYiOjE1NTgyNjQ1MTYsImV4cCI6MTU1ODg2OTMxNiwiaWF0IjoxNTU4MjY0NTE2fQ.6YXiDAHt3XUILrYFdFg4hZv6z2gesNIu0LITVJAfgw8
+###
+GET https://localhost:5003/api/user
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjEiLCJuYmYiOjE1NTgyNjM5NjgsImV4cCI6MTU1ODg2ODc2OCwiaWF0IjoxNTU4MjYzOTY4fQ.YQi8BoiAsJEfdGAW34QJRVLNjAW8C5EZJNNQsQs3WcE
+###
+POST https://localhost:5003/api/user/authenticate
+Content-Type: application/x-www-form-urlencoded
+
+userName=test&password=test
+
+###
+POST https://localhost:5003/api/user/authenticate
+Content-Type: application/text/plain
+
+{
+    "userName": "2326020374085016",
+    "password": "test"
+}
 
 ###
 POST https://localhost:5003/api/concert/SearchConcert
@@ -24,6 +42,9 @@ GET http://localhost:5002/api/concertSeats?concertId=impact2019002
 ###
 GET http://localhost:5002/api/concertSeats/AvailableSeats?zoneId=1
 
+###
+GET http://localhost:5002/api/concertSeats/TicketByOwner?ownerId=2326020374085016
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjIiLCJuYmYiOjE1NTg1OTE5NjAsImV4cCI6MTU1OTE5Njc2MCwiaWF0IjoxNTU4NTkxOTYwfQ.mQEMDBSQLVCLXoduZSm4u2OH6e0lXT1W2l64TVZ8Rbw
 ###
 POST https://localhost:5003/api/concertSeats/BookingSeats
 content-type: application/json
@@ -48,3 +69,6 @@ content-type: application/json
 }
 
 
+
+
+"\r\n            {\r\n                'seatIds':[{\"id\":\"impact2019002-UM5-112\",\"no\":\"112\",\"price\":\"6000.0\"},{\"id\":\"impact2019002-UM5-97\",\"no\":\"97\",\"price\":\"6000.0\"},{\"id\":\"impact2019002-UM5-113\",\"no\":\"113\",\"price\":\"6000.0\"},{\"id\":\"impact2019002-UM5-114\",\"no\":\"114\",\"price\":\"6000.0\"}],\r\n                'total':0,    \r\n                'booking':\r\n                    {\r\n                        '$set':\r\n                            {\r\n                                'bookingStatus': \r\n                                    {  '_id':'bs02','name':'Sold Out', \r\n                                        'isActive': true,\r\n                                        'bookedDate':'2326020374085016',\r\n                                        'bookedBy':'YYYY-03-20 04:09:38'\r\n                                    }\r\n                            }\r\n                    }\r\n                    \r\n            }"

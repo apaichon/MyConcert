@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - MvcConcert</title>
+    <title>@ViewData["Title"] - My Concert</title>
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -16,17 +16,20 @@
               integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE="/>
     </environment>
     <link rel="stylesheet" href="~/css/site.css" />
+ 
 </head>
 <body>
+
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MvcConcert</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">My Concert</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse ">
+                   
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Concert" asp-action="Index">Concert List</a>
@@ -38,7 +41,13 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Customer" asp-action="MyProfile">My Profile</a>
                         </li>
                     </ul>
+         
                 </div>
+                    <ul class="nav navbar-nav navbar-right flex-grow-1">
+                        <li class="nav-item"><label class="nav-link text-dark" id="user"></label></li>
+                        <li class="nav-item"><a id="btnLogIn" class="nav-link" asp-controller="Authentication" asp-action="LogIn"> Login</a></li>
+                        <li class="nav-item" ><a id="btnLogOut" class="nav-link" asp-controller="Authentication" asp-action="LogOut"> Logout</a></li>
+                    </ul>
             </div>
         </nav>
     </header>
@@ -51,7 +60,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2562 - MvcConcert - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2562 - My Concert - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
 
@@ -72,8 +81,37 @@
                 crossorigin="anonymous"
                 integrity="sha256-E/V4cWE4qvAeO5MOhjtGtqDzPndRO1LBk8lJ/PR7CA4=">
         </script>
+      
     </environment>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        function getCookie(cname) {
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for(var i = 0; i <ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+        }
+
+        $('#btnLogIn').show();
+        $('#btnLogOut').hide();
+        var token = getCookie("token");
+        // console.log('token', token);
+        token = JSON.parse(token);
+        if (token) {
+            $('#user').text(token.firstName + ' ' + token.lastName);
+            $('#btnLogIn').hide();
+            $('#btnLogOut').show();
+        }
+    </script>
 
     @RenderSection("Scripts", required: false)
 </body>

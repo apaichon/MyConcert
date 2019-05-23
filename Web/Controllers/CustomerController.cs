@@ -5,15 +5,25 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MyConcert.Models;
+using Puppy.Utils;
+using Puppy.Model.Output;
+using MyConcert.Utils;
+using Newtonsoft.Json;
 
 namespace MyConcert.Controllers
 {
     public class CustomerController : Controller
     {
-        public IActionResult MyTicket(Puppy.Model.Output.Result result)
+        public async Task<IActionResult> MyTicket( )
         {
-            
-            return View(result);
+            string bookedBy = HttpContext.Request.Cookies["fbLogIn"].ToString();
+            RestApi api = new RestApi("https://localhost:5003/api/concertSeats/TicketByOwner?ownerId="+bookedBy);
+            api.SetHeader("Authorization", Cookies.GetToken(Request));
+            var data = await api.GetAsync("");
+            var responseBody = await data.Content.ReadAsStringAsync();
+            Result result = JsonConvert.DeserializeObject<Result>(responseBody);
+            List<ConcertSeatModel> list = JsonConvert.DeserializeObject<List<ConcertSeatModel>>(result.Data);
+            return View(list);
         }
 
         public IActionResult MyProfile()

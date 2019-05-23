@@ -11,9 +11,11 @@ using Puppy.Model.Output;
 using Puppy.Model.Message;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MyConcertApi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     [Produces("application/json")]
@@ -27,7 +29,7 @@ namespace MyConcertApi.Controllers
         {
            this.Message = BusinessMessage.CreateMessage(BusinessLocale.th_TH);
         }
- 
+        [AllowAnonymous]
         [HttpGet()]
         public ActionResult<Result> GetAvailableSeats(string concertId)
         {
@@ -54,6 +56,16 @@ namespace MyConcertApi.Controllers
             using (ConcertSeatsBLL concert = new ConcertSeatsBLL())
             {       
               Result result = concert.GetAvailableSeatsByZoneId(zoneId, this.Message);
+              return result;  
+            }
+        }
+
+        [HttpGet("TicketByOwner")]
+        public ActionResult<Result> GetTicketByOwner(string ownerId)
+        {
+            using (ConcertSeatsBLL concert = new ConcertSeatsBLL())
+            {       
+              Result result = concert.GetTicketByOwner(ownerId, this.Message);
               return result;  
             }
         }

@@ -12,6 +12,7 @@ using Puppy.Utils;
 using Puppy.Model.Output;
 using Newtonsoft.Json;
 using System.Net.Http;
+using MyConcert.Utils;
 
 
 namespace MyConcert.Controllers
@@ -33,9 +34,10 @@ namespace MyConcert.Controllers
             return View(concertList);
         }
 
-
+  
         public async Task<IActionResult> Details(string concertId)
         {
+            
             RestApi api = new RestApi("https://localhost:5003/api/concert?concertId="+concertId);
           
             var data =  await api.GetAsync("");
@@ -63,9 +65,15 @@ namespace MyConcert.Controllers
             }
             return View(concertDetail);
         }
-
+        
         public async Task<IActionResult> LayoutBooking(string zoneId)
         {
+            if (!Cookies.CheckFbLogIn(Request))
+            {
+                return RedirectToAction("LogIn", "Authentication");
+            }
+
+
             byte[] values;string id="";
             var cookies = HttpContext.Request.Cookies;
             HttpContext.Session.TryGetValue("ZoneId",out values);
@@ -76,21 +84,26 @@ namespace MyConcert.Controllers
            
             zoneId = (zoneId==null?id:zoneId);
             RestApi api = new RestApi("https://localhost:5003/api/concertSeats/Zone?zoneId="+zoneId);
+            api.SetHeader("Authorization", Cookies.GetToken(Request));
+            
             var data = await api.GetAsync("");
-        
+            //data.ReasonPhrase
+            //data.StatusCode == 401
             var responseBody = await data.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<Result>(responseBody);
             List<ConcertSeatModel> availableSeats = JsonConvert.DeserializeObject<List<ConcertSeatModel>>(result.Data);
             return View(availableSeats);
         }
+        
         [HttpPost]
         public async Task<IActionResult> Booking(int totalSeats, string seatIds)
         {
-           var seats = seatIds;
-
-            if (HttpContext.Request.Cookies["fbLogIn"] == null ){
+            if (!Cookies.CheckFbLogIn(Request))
+            {
                 return RedirectToAction("LogIn", "Authentication");
             }
+            
+           var seats = seatIds;
 
             string bookedBy = HttpContext.Request.Cookies["fbLogIn"].ToString();
 
@@ -113,7 +126,7 @@ namespace MyConcert.Controllers
                     }
                     
             }";
-            string bookedDate = DateTime.Now.ToString("YYYY-MM-dd hh:mm:ss");
+            string bookedDate = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
 
             jsonBooked = jsonBooked.Replace("{0}", seatIds);
             jsonBooked = jsonBooked.Replace("{1}", totalSeats.ToString());
@@ -122,11 +135,28 @@ namespace MyConcert.Controllers
             
 
             RestApi api = new RestApi("https://localhost:5003/api/concertSeats/BookingSeats");
+            api.SetHeader("Authorization", Cookies.GetToken(Request));
+            
             var data = await api.AddAsync(jsonBooked);
             
             var responseBody = await data.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<Result>(responseBody);
-            return RedirectToAction("MyTicket", "Customer", result);
+            if(result.Status == Puppy.Model.Business.BusinessStatus.Completed)
+            {
+                 return RedirectToAction("MyTicket", "Customer");
+            }
+            else
+            {
+                byte[] values;string zoneId="";
+                HttpContext.Session.TryGetValue("ZoneId",out values);
+                if (values != null )
+                {
+                    zoneId = Encoding.ASCII.GetString(values);
+                }
+                return RedirectToAction("LayoutBooking", "Concert", zoneId);
+            }
+
+           
         }
 
     
@@ -135,7 +165,10 @@ namespace MyConcert.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+    
+           return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+    
     }
 }

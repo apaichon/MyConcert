@@ -1,12 +1,34 @@
-@using Puppy.Model.Output;
-@model Result
+@using MyConcert.Models;
+@model List<ConcertSeatModel>
 <p>My Ticket</p>
 
-@{
-    if(Model != null)
-    {
-        <h1>@Model.Message</h1>
-        
-    }
-}
+    
+<div class="row">
+@foreach (var x in Model)
+{
+
+<div class="col-sm-3">
+<div class="card" style="width: 18rem;">
+  <img src="..." class="card-img-top" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">@x.SeatNo</h5>
+    <p class="card-text">@x.Location.Name</p>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">Latitude : @x.Location.Latitude</li>
+    <li class="list-group-item">Longitude : @x.Location.Longitude</li>
+  </ul>
+  <div class="card-body">
+    <a href="#" class="card-link">Zone : @x.Zone.Zone </a>
+    <a href="#" class="card-link">Price : @x.Zone.Price</a>
+  </div>
+</div>
+  </div>
+      }  
+
+</div>
+
+
+
+
 
